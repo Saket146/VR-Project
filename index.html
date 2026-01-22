@@ -4,30 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Campus Navigation</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 20px;
+      padding: 30px;
     }
 
-    h2 {
-      margin-top: 30px;
+    h1 {
+      margin-bottom: 25px;
     }
 
     .btn-group {
       display: flex;
       justify-content: center;
-      gap: 12px;
+      gap: 15px;
       flex-wrap: wrap;
-      margin-top: 15px;
     }
 
     button {
-      padding: 12px 18px;
-      font-size: 16px;
+      padding: 14px 22px;
+      font-size: 18px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       background: #1e88e5;
       color: white;
@@ -37,113 +37,35 @@
     button:hover {
       background: #1565c0;
     }
-
-    button.selected {
-      background: #43a047;
-    }
-
-    #startBtn {
-      margin-top: 30px;
-      padding: 14px 22px;
-      font-size: 18px;
-      background: #ff6f00;
-      border-radius: 12px;
-    }
-
-    #startBtn:hover {
-      background: #e65100;
-    }
-
-    #result {
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
-    }
   </style>
 </head>
 <body>
 
-  <h1>📍 Campus Video Navigation</h1>
+  <h1>📍 Choose Destination</h1>
 
-  <h2>Pickup Location</h2>
-  <div class="btn-group" id="pickupButtons">
-    <button onclick="selectPickup(this, 'library')">Library</button>
-    <button onclick="selectPickup(this, 'admin')">Admin block</button>
-    <button onclick="selectPickup(this, 'canteen')">Canteen</button>
+  <div class="btn-group">
+    <button onclick="openVideo('admin')">Admin Block</button>
+    <button onclick="openVideo('food')">Food Court</button>
+    <button onclick="openVideo('sports')">Sports Complex</button>
   </div>
-
-  <h2>Destination</h2>
-  <div class="btn-group" id="destinationButtons">
-    <button onclick="selectDestination(this, 'library')">Library</button>
-    <button onclick="selectDestination(this, 'admin')">Admin block</button>
-    <button onclick="selectDestination(this, 'canteen')">Canteen</button>
-  </div>
-
-  <button id="startBtn" onclick="startNavigation()">Start Navigation ▶️</button>
-
-  <div id="result"></div>
 
   <script>
-    let pickup = null;
-    let destination = null;
-
-    // ✅ Put your video file links here
-    // Example: "videos/library_to_admin.mp4" or full URL like "https://..."
-    const routes = {
-      "library_admin": "videos/library_to_admin.mp4",
-      "library_canteen": "videos/library_to_canteen.mp4",
-
-      "admin_library": "videos/admin_to_library.mp4",
-      "admin_canteen": "videos/admin_to_canteen.mp4",
-
-      "canteen_library": "videos/canteen_to_library.mp4",
-      "canteen_admin": "videos/canteen_to_admin.mp4",
+    // 🔹 Update video paths if needed
+    const videos = {
+      admin: "videos/admin_block.mp4",
+      food: "videos/food_court.mp4",
+      sports: "videos/sports_complex.mp4"
     };
 
-    function clearSelection(groupId) {
-      document.querySelectorAll(`#${groupId} button`).forEach(btn => {
-        btn.classList.remove("selected");
-      });
-    }
+    function openVideo(place) {
+      const video = videos[place];
 
-    function selectPickup(button, location) {
-      pickup = location;
-      clearSelection("pickupButtons");
-      button.classList.add("selected");
-    }
-
-    function selectDestination(button, location) {
-      destination = location;
-      clearSelection("destinationButtons");
-      button.classList.add("selected");
-    }
-
-    function startNavigation() {
-      const result = document.getElementById("result");
-
-      if (!pickup || !destination) {
-        result.innerHTML = "❌ Please select BOTH pickup and destination!";
+      if (!video) {
+        alert("Video not available!");
         return;
       }
 
-      if (pickup === destination) {
-        result.innerHTML = "⚠️ Pickup and Destination are the same!";
-        return;
-      }
-
-      const key = `${pickup}_${destination}`;
-      const videoLink = routes[key];
-
-      if (!videoLink) {
-        result.innerHTML = "❌ No video available for this route!";
-        return;
-      }
-
-      result.innerHTML = `✅ Opening navigation video from <b>${pickup}</b> ➝ <b>${destination}</b>`;
-
-      // Open video in new tab
-      window.open(videoLink, "_blank");
+      window.open(video, "_blank");
     }
   </script>
 
